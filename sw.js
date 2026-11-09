@@ -1,5 +1,5 @@
 // Offline-välimuisti. Nosta versionumeroa aina kun sivua päivitetään.
-const CACHE = "niemet-v13";
+const CACHE = "niemet-v14";
 const FILES = ["./", "index.html", "manifest.webmanifest", "icon-192.png", "icon-512.png", "apple-touch-icon.png",
   "img/silta.jpg", "img/lounge.jpg", "img/carl.jpg", "img/hauta.jpg", "img/jilji.jpg", "img/kaste.jpg", "aineisto/pubiruoat.jpg"];
 self.addEventListener("install", e => {
