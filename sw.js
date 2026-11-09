@@ -1,7 +1,7 @@
 // Offline-välimuisti. Nosta versionumeroa aina kun sivua päivitetään.
-const CACHE = "niemet-v12";
+const CACHE = "niemet-v13";
 const FILES = ["./", "index.html", "manifest.webmanifest", "icon-192.png", "icon-512.png", "apple-touch-icon.png",
-  "img/silta.jpg", "img/lounge.jpg", "img/carl.jpg", "img/hauta.jpg", "img/jilji.jpg", "aineisto/pubiruoat.jpg"];
+  "img/silta.jpg", "img/lounge.jpg", "img/carl.jpg", "img/hauta.jpg", "img/jilji.jpg", "img/kaste.jpg", "aineisto/pubiruoat.jpg"];
 self.addEventListener("install", e => {
   // cache: "reload" ohittaa selaimen HTTP-välimuistin (GitHub Pages: max-age=600)
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(FILES.map(f => new Request(f, { cache: "reload" })))));

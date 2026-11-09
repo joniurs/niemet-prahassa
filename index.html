@@ -174,8 +174,27 @@ document.getElementById("lockForm").addEventListener("submit", async e => {
       <p class="muted">Isoisoisä Carl (Karel) Hrabie syntyi ja kasvoi Prahassa. Hänen isänsä Josef oli kontrabassonsoiton professori Prahan konservatoriossa.</p>
       <div class="person" style="clear:both"><div class="yr">Josef</div><div>Kontrabasisti ja säveltäjä. Soitti Säätyteatterissa (Stavovské divadlo) ennen professuuria. Opetti konservatoriossa, joka toimi silloin dominikaaniluostarissa Jiljin kirkon vieressä. Kuoli 1869 perheen asuessa Dražického náměstíllä. Haudattu Malostranský hřbitoville.</div></div>
       <figure style="margin-top:10px"><img class="pic" style="max-width:280px" src="img/hauta.jpg" alt="Josef Hraběn hauta" loading="lazy"><figcaption>Hautalaatta: <i>Josef Hrabě, profesor konservatoře hry na kontrabas a skladatel</i> (konservatorion kontrabassonsoiton professori ja säveltäjä). Huomaa kirjoitusasu <i>Hrabě</i>.</figcaption></figure>
-      <div class="person" style="margin-top:10px"><div class="yr">Carl</div><div>Syntyi 1852 Řetězová-kadulla Vanhassakaupungissa. Kastettu (todennäköisesti) Jiljin kirkossa. Kasvoi Malá Stranan taloissa, joista osa on matkan majapaikan naapurissa.</div></div>
+      <div class="person" style="margin-top:10px"><div class="yr">Carl</div><div><b>Carl Franz</b>, syntyi 26.4.1852 Řetězová-kadulla Vanhassakaupungissa ja kastettiin 2.5.1852 Jiljin kirkossa (kastemerkintä alla). Äiti Barbara o.s. Soukup. Kasvoi Malá Stranan taloissa, joista osa on matkan majapaikan naapurissa.</div></div>
+      <div class="person" style="margin-top:10px"><div class="yr">Ovenec</div><div>Sekä Josefin että Barbaran isät olivat talollisia <b>Vorder-Owenetzissa</b> (Přední Ovenec). Josefin äiti Magdalena oli samasta kylästä, ja Barbaran äiti Katharina viereisestä Holešovicesta. Se oli kylä Prahan pohjoispuolella, nykyisin Bubenečin kaupunginosaa Letnán ja Stromovkan puiston kupeessa.</div></div>
       <div class="person" style="margin-top:10px"><div class="yr">Chvaly</div><div>Josefin isoisä toimi Chvalyn alueella voudin/kylänvanhimman tapaisessa tehtävässä. Selvitettävää: Chvalský zámek ja Zámek Čertousy.</div></div>
+    </div>
+
+    <div class="card">
+      <h2>Carlin kastemerkintä ✓</h2>
+      <p class="muted small" style="margin:0">Jiljin seurakunnan kastekirja, Prahan kaupunginarkisto (AHMP). Napauta kuvaa, niin se aukeaa isona.</p>
+      <div style="overflow-x:auto;margin-top:8px"><a href="img/kaste.jpg" target="_blank"><img src="img/kaste.jpg" alt="Carl Franz Hraběn kastemerkintä" style="height:220px;width:auto;max-width:none;border-radius:8px;border:1px solid var(--line);display:block"></a></div>
+      <dl class="kv small" style="margin-top:10px">
+        <dt>Syntynyt</dt><dd>26. huhtikuuta 1852</dd>
+        <dt>Kastettu</dt><dd>2. toukokuuta 1852</dd>
+        <dt>Nimi</dt><dd><b>Carl Franz</b>, poika, katolinen, avioliitosta</dd>
+        <dt>Kastaja</dt><dd>Wilhelm Kabeschy (?), apupappi (Coop.)</dd>
+        <dt>Isä</dt><dd><b>Josef Hrabě</b>, Professor am Conservatorium der Musik zu Prag</dd>
+        <dt>Isän vanhemmat</dt><dd>Josef Hrabě, talonomistaja (Hausbesitzer?) Vorder-Owenetzissa, ja Magdalena o.s. Nowak, Vorder-Owenetzista</dd>
+        <dt>Äiti</dt><dd><b>Barbara</b>, Thomas Soukupin tytär</dd>
+        <dt>Äidin vanhemmat</dt><dd>Thomas Soukup, maanomistaja (Grundbesitzer) Vorder-Owenetzissa, ja Katharina o.s. Bukowsky, Groß-Holeschowitzista (Holešovice)</dd>
+      </dl>
+      <p class="muted small">Luettu käsialasta. (?) = epävarma lukutapa.</p>
+      <div class="btns"><a class="btn primary" href="https://katalog.ahmp.cz/pragapublica/permalink?xid=9D7ED8E3980D4E5A907AF834C491F3DA&amp;scan=284#scan284" target="_blank" rel="noopener">Alkuperäinen arkistossa (scan 284)</a></div>
     </div>
 
     <div class="card">
@@ -189,7 +208,8 @@ document.getElementById("lockForm").addEventListener("submit", async e => {
       <h2>Selvitettävää paikan päällä</h2>
       <ul class="small">
         <li>Josefin hauta: kuvaa hautakivi ja ympäristö, kirjaa tekstit.</li>
-        <li>Jiljin kirkko: kysy kastekirjoista (Carl 1852) ja konservatorion historiasta.</li>
+        <li>Jiljin kirkko: kuvaa kastemalja, ja kysy konservatorion historiasta.</li>
+        <li>Vorder-Owenetz / Přední Ovenec (Bubeneč): Hraběn ja Soukupin isovanhempien kotikylä. Onko vanhaa kylänraittia jäljellä?</li>
         <li>Prahan linna: oliko Hrabe/Hrabie-nimisiä linnan palveluksessa?</li>
         <li>Nimi <i>Hrabe</i> ~ tšekin <i>hrabě</i> (kreivi)?</li>
         <li>Vanhankaupungin osoite I/32 tai 36 (1863) on purettu. Sijaitsi mahdollisesti juutalaiskorttelin lähellä.</li>
@@ -331,7 +351,7 @@ const PAIVAT = [
       { t: "15.00", what: "Vanhankaupungin tori", note: "Torikierros ja lämmin juoma ennen konserttia.",
         btns: [["Vanhankaupungin tori", map("Old Town Square Prague")]] },
       { t: "16.30", what: "Jiljin kirkko ja dominikaaniluostari", fam: true,
-        note: "Carlin kastekirkko (Husova). Viereisessä luostarissa toimi konservatorio, jossa Josef opetti. Tule ajoissa, niin ehdit katsella ja kysyä kastekirjoista.",
+        note: "Carlin kastekirkko (Husova). Viereisessä luostarissa toimi konservatorio, jossa Josef opetti. Carl Franz kastettiin täällä 2.5.1852 – kastemerkintä löytyy Suku-välilehdeltä. Tule ajoissa, niin ehdit katsella.",
         btns: [["Kostel sv. Jiljí", map("Kostel sv. Jiljí, Husova, Praha"), true], ["Luostari", map("Klášter dominikánů Praha Jilská")]] },
       { t: "17.00", what: "Konsertti: Vivaldi – Neljä vuodenaikaa", fam: true,
         note: "Dvořák Symphony Orchestra, Jiljin kirkko. Matkan huipennus: Hrabien jälkeläiset samassa kirkossa, jossa Carl kastettiin ja jonka vieressä Josef opetti.",
@@ -378,7 +398,8 @@ const PAIKAT = [
     ["Stavovské divadlo (Säätyteatteri)", "Josef soitti täällä ennen professuuria. Don Giovannin ensi-ilta 1787.", "Estates Theatre Prague"],
     ["Nejvyšší purkrabství", "Linnakreivin virka-asunto", "Nejvyšší purkrabství Praha"],
     ["Staré purkrabství", "Linnakreivin vanha linna. Maisemapaikka?", "Staré purkrabství Praha"],
-    ["Chvalský zámek", "Chvalyn linna (esi-isien seutu)", "Chvalský zámek"],
+    ["Přední Ovenec (Bubeneč)", "Vorder-Owenetz: Carlin isovanhempien kotikylä. Nykyinen Ovenecká-katu on suunnilleen sen kohdalla.", "Ovenecká, Praha 7"],
+    ["Chvalský zámek","Chvalyn linna (esi-isien seutu)", "Chvalský zámek"],
     ["Zámek Čertousy", "Rauniotalo, Bártlova 82/11, Horní Počernice", "Bártlova 82/11, Praha"],
   ]},
   { g: "Olutkapakat", l: [
