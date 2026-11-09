@@ -436,8 +436,8 @@ const AINEISTOT = [
 ];
 
 // [nimi, kuvaus, url, ikoni (img/ico/*.png tai emoji), sovellus {a: Android-paketti, i: App Store -id}]
-// Jos sovellus on annettu: Androidilla avataan sovellus suoraan (muuten url),
-// iPhonella App Storen sivu, jossa on "Avaa"-painike (Finnair/Bolt eivät tue suoria linkkejä).
+// Jos sovellus on annettu: avataan sovelluskaupan sivu, jossa on "Avaa"-painike
+// (Android: Google Play, iPhone: App Store). Finnair/Bolt/Lítačka eivät tue suoria linkkejä.
 const LINKIT = [
   ["Finnair", "Avaa sovellus", "https://www.finnair.com/fi-fi", "finnair", { a: "com.finnair", i: 933867978 }],
   ["Hrabien Praha", "Yhteinen karttalista", "https://maps.app.goo.gl/w6HrUggkQBowxyk19", "maps"],
@@ -522,7 +522,7 @@ const OS = /android/i.test(navigator.userAgent) ? "android" : /iphone|ipad|ipod/
 const linkUrl = l => {
   const app = l[4];
   if (app && OS === "android" && app.a)
-    return `intent://#Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;package=${app.a};S.browser_fallback_url=${encodeURIComponent(l[2])};end`;
+    return `https://play.google.com/store/apps/details?id=${app.a}`;
   if (app && OS === "ios" && app.i) return `https://apps.apple.com/fi/app/id${app.i}`;
   return l[2];
 };
