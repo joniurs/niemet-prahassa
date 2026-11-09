@@ -190,6 +190,11 @@ document.getElementById("lockForm").addEventListener("submit", async e => {
 
   <section data-view="paikat"><div id="places"></div></section>
 
+  <section data-view="kansio">
+    <p class="muted small" style="margin:2px 2px 12px">Yhteiset materiaalit, joita ei ole sidottu aikaan tai paikkaan. Napauta avataksesi isona.</p>
+    <div id="materials"></div>
+  </section>
+
   <section data-view="linkit">
     <div class="links" id="links"></div>
   </section>
@@ -245,6 +250,7 @@ document.getElementById("lockForm").addEventListener("submit", async e => {
   <button data-go="ohjelma" class="on"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Ohjelma</button>
   <button data-go="suku"><svg viewBox="0 0 24 24"><path d="M12 3v5M12 8l-6 5M12 8l6 5M6 13v4M18 13v4"/><circle cx="12" cy="3.5" r="1.5"/><circle cx="6" cy="19" r="2"/><circle cx="18" cy="19" r="2"/></svg>Suku</button>
   <button data-go="paikat"><svg viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>Paikat</button>
+  <button data-go="kansio"><svg viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Kansio</button>
   <button data-go="linkit"><svg viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg>Linkit</button>
   <button data-go="info"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg>Info</button>
 </nav>
@@ -372,8 +378,7 @@ const PAIKAT = [
     ["Jelínkova plzeňská pivnice", "Maailman 70. paras (Prahan 4.)", "Jelínkova plzeňská pivnice Praha"],
     ["U Fleků", "Prahan vanhin oluthuone", "U Fleků Praha"],
     ["U Kalicha", "Kunnon sotamies Švejk istui täällä", "Hospoda U Kalicha Praha"],
-  ], extra: `<div class="card"><h2>Prahan top 10 pubiruoat</h2><p class="muted small">Ruoat ja olutparit. Napauta kuvaa, niin se aukeaa isona.</p>
-    <a href="img/pubiruoat.jpg" target="_blank"><img class="pic" src="img/pubiruoat.jpg" alt="Prahan top 10 pubiruoat ja olutparit" loading="lazy"></a></div>` },
+  ], extra: `<p class="muted small" style="margin:0 2px">Pubiruoat ja olutparit löytyvät <a href="#kansio">Kansiosta</a>.</p>` },
   { g: "Aamiainen", l: [
     ["Bread Gap", "Huokeampaa aamiaista", "Bread Gap Praha"],
     ["U Stolu", "Aamiaista/brunssia, $$", "U Stolu Praha"],
@@ -387,6 +392,12 @@ const PAIKAT = [
     ["Residence U Mecenáše", "Majapaikka", "Residence U Mecenáše Praha"],
     ["Václav Havelin lentokenttä", "Terminaali 2", "Letiště Václava Havla Praha"],
   ]},
+];
+
+// Kansio: yhteiset materiaalit. Lisää tiedosto kansioon "aineisto/" ja uusi rivi tähän.
+// Kuvat (jpg/png/webp) näytetään esikatseluna, muut (pdf ym.) linkkinä. Myös ulkoinen linkki käy.
+const AINEISTOT = [
+  { nimi: "Prahan top 10 pubiruoat", kuvaus: "Makuprofiilit ja paikalliset olutparit", tiedosto: "aineisto/pubiruoat.jpg" },
 ];
 
 const LINKIT = [
@@ -460,7 +471,14 @@ $("#places").innerHTML = PAIKAT.map(g => `<div class="grp">${esc(g.g)}</div><div
   <div class="place"><div><div class="n">${esc(p[0])}</div>${p[1] ? `<div class="note">${esc(p[1])}</div>` : ""}</div>
   <a class="btn go" href="${map(p[2])}" target="_blank" rel="noopener">Kartta</a></div>`).join("")}</div>${g.extra || ""}`).join("");
 
-$("#links").innerHTML = LINKIT.map(l => `<a class="lnk" href="${esc(l[2])}" target="_blank" rel="noopener"><b>${esc(l[0])}</b><span>${esc(l[1])}</span></a>`).join("");
+$("#materials").innerHTML = AINEISTOT.map(a => {
+  const isImg = /\.(jpe?g|png|webp|gif|svg)$/i.test(a.tiedosto);
+  return `<div class="card"><h2>${esc(a.nimi)}</h2>${a.kuvaus ? `<p class="muted small" style="margin:0">${esc(a.kuvaus)}</p>` : ""}
+    ${isImg ? `<a href="${esc(a.tiedosto)}" target="_blank"><img class="pic" src="${esc(a.tiedosto)}" alt="${esc(a.nimi)}" loading="lazy"></a>`
+            : `<div class="btns"><a class="btn primary" href="${esc(a.tiedosto)}" target="_blank" rel="noopener">Avaa</a></div>`}</div>`;
+}).join("");
+
+$("#links").innerHTML =LINKIT.map(l => `<a class="lnk" href="${esc(l[2])}" target="_blank" rel="noopener"><b>${esc(l[0])}</b><span>${esc(l[1])}</span></a>`).join("");
 
 document.querySelectorAll(".dd").forEach(el => el.textContent = fmt(dayDate(+el.dataset.day)));
 
