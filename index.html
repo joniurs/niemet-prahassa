@@ -109,9 +109,43 @@ nav{position:fixed;left:0;right:0;bottom:0;background:var(--tab);border-top:1px 
 nav button{flex:1;background:none;border:0;color:var(--muted);font:inherit;font-size:.72rem;padding:4px 0;display:flex;flex-direction:column;align-items:center;gap:2px}
 nav button svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 nav button.on{color:var(--accent)}
+/* password gate */
+body.locked > header, body.locked > main, body.locked > nav{display:none}
+#lock{display:none;min-height:100vh;align-items:center;justify-content:center;padding:24px 16px;
+  background:linear-gradient(rgba(40,12,12,.55),rgba(40,12,12,.85)),url(img/silta.jpg) center/cover,var(--accent)}
+body.locked #lock{display:flex}
+#lock form{background:var(--card);border-radius:16px;padding:22px 20px;width:100%;max-width:340px;text-align:center;box-shadow:0 10px 30px rgba(0,0,0,.35)}
+#lock h1{font-size:1.6rem;margin-bottom:4px}
+#lock input{width:100%;font:inherit;font-size:16px;padding:10px 12px;margin:14px 0 10px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink)}
+#lock button{width:100%;font:inherit;padding:10px;border:0;border-radius:10px;background:var(--accent);color:var(--accent-ink);font-weight:600}
+#lock .err{color:#c0392b;font-size:.88rem;margin-top:8px}
 </style>
 </head>
-<body>
+<body class="locked">
+<div id="lock">
+  <form id="lockForm" autocomplete="on">
+    <h1>Niemet Prahassa</h1>
+    <div class="muted small">Vain Hrabien jälkeläisille 🙂</div>
+    <input id="pw" type="password" name="password" autocomplete="current-password" placeholder="Salasana" aria-label="Salasana">
+    <button type="submit">Avaa</button>
+    <div class="err" id="pwErr" hidden>Väärä salasana – vihje: Josefin soitin</div>
+  </form>
+</div>
+<script>
+// Salasanan SHA-256-tiiviste (pienillä kirjaimilla). Vaihda: laske uusi tiiviste ja korvaa alla.
+const LUKKO = "4920510594604598b8e9b4dc9d07d8b02e9c0c9480a290c0b73249e3047cc512";
+try { if (localStorage.getItem("niemet-avain") === LUKKO) document.body.classList.remove("locked"); } catch (e) {}
+document.getElementById("lockForm").addEventListener("submit", async e => {
+  e.preventDefault();
+  const pw = document.getElementById("pw").value.trim().toLowerCase();
+  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(pw));
+  const hex = [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, "0")).join("");
+  if (hex === LUKKO) {
+    try { localStorage.setItem("niemet-avain", hex); } catch (e) {}
+    document.body.classList.remove("locked"); window.scrollTo(0, 0);
+  } else { document.getElementById("pwErr").hidden = false; }
+});
+</script>
 <header>
   <h1>Niemet Prahassa</h1>
   <div class="sub">Jyri · Joni · Saku — Hrabien suvun juurilla</div>
@@ -433,8 +467,8 @@ document.querySelectorAll(".dd").forEach(el => el.textContent = fmt(dayDate(+el.
 // countdown
 (function () {
   if (!MATKA_ALKAA) return;
-  const start = new Date(MATKA_ALKAA + "T17:35:00+02:00");
-  const days = Math.ceil((start - new Date()) / 864e5);
+  const now = new Date(); now.setHours(12, 0, 0, 0);
+  const days = Math.round((new Date(MATKA_ALKAA + "T12:00:00") - now) / 864e5);
   const el = $("#count");
   if (days > 1) { el.textContent = `Lähtöön ${days} päivää`; el.hidden = false; }
   else if (days === 1) { el.textContent = "Lähtö huomenna!"; el.hidden = false; }

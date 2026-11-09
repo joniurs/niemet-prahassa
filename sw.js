@@ -1,5 +1,5 @@
 // Offline-välimuisti. Nosta versionumeroa aina kun sivua päivitetään.
-const CACHE = "niemet-v4";
+const CACHE = "niemet-v5";
 const FILES = ["./", "index.html", "manifest.webmanifest", "icon-192.png", "icon-512.png", "apple-touch-icon.png",
   "img/silta.jpg", "img/lounge.jpg", "img/carl.jpg", "img/hauta.jpg", "img/jilji.jpg", "img/pubiruoat.jpg"];
 self.addEventListener("install", e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(FILES))); self.skipWaiting(); });
