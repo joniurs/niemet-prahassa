@@ -57,13 +57,13 @@ section[data-view].on{display:block}
 .small{font-size:.85rem}
 /* day chips */
 /* photo carousel */
-#photos{margin:0 0 14px}
+#photos{margin:10px 0 4px}
 .phead{display:flex;justify-content:space-between;align-items:baseline;margin:0 2px 6px;font-size:.88rem;font-weight:600}
 .phead a{font-weight:normal;font-size:.85rem;text-decoration:none}
 .strip{display:flex;gap:8px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch;border-radius:12px}
 .strip::-webkit-scrollbar{display:none}
 .strip a{flex:0 0 auto;scroll-snap-align:start;position:relative;display:block}
-.strip img{display:block;height:170px;width:auto;max-width:80vw;object-fit:cover;border-radius:12px;background:var(--soft)}
+.strip img{display:block;height:150px;width:auto;max-width:80vw;object-fit:cover;border-radius:12px;background:var(--soft)}
 .strip .when{position:absolute;left:6px;bottom:6px;font-size:.7rem;color:#fff;background:rgba(0,0,0,.5);padding:1px 6px;border-radius:99px}
 .chips{display:flex;gap:8px;overflow-x:auto;padding:2px 0 12px;scrollbar-width:none}
 .chips::-webkit-scrollbar{display:none}
@@ -163,10 +163,6 @@ document.getElementById("lockForm").addEventListener("submit", async e => {
 
 <main>
   <section data-view="ohjelma" class="on">
-    <div id="photos" hidden>
-      <div class="phead"><span>📷 Uusimmat kuvat</span><a href="https://photos.app.goo.gl/e2fCZZuTrbfYoq7u5" target="_blank" rel="noopener">Koko albumi →</a></div>
-      <div class="strip" id="strip"></div>
-    </div>
     <div class="chips" id="dayChips"></div>
     <div id="dayBody"></div>
   </section>
@@ -410,7 +406,7 @@ const PAIKAT = [
 // Kansio: yhteiset materiaalit. Lisää tiedosto kansioon "aineisto/" ja uusi rivi tähän.
 // Kuvat (jpg/png/webp) näytetään esikatseluna, muut (pdf ym.) linkkinä. Myös ulkoinen linkki käy.
 const AINEISTOT = [
-  { nimi: "📷 Yhteinen kuva-albumi", kuvaus: "Google Kuvat: matkan kuvat kaikilta. Lisää omasi Jonin jakamalla muokkauslinkillä.", tiedosto: "https://photos.app.goo.gl/e2fCZZuTrbfYoq7u5" },
+  { nimi: "📷 Yhteinen kuva-albumi", kuvaus: "Google Kuvat: matkan kuvat kaikilta. Lisää omasi Jonin jakamalla muokkauslinkillä.", tiedosto: "https://photos.app.goo.gl/e2fCZZuTrbfYoq7u5", karuselli: true },
   { nimi: "Prahan top 10 pubiruoat", kuvaus: "Makuprofiilit ja paikalliset olutparit", tiedosto: "aineisto/pubiruoat.jpg" },
 ];
 
@@ -489,6 +485,7 @@ $("#places").innerHTML = PAIKAT.map(g => `<div class="grp">${esc(g.g)}</div><div
 $("#materials").innerHTML = AINEISTOT.map(a => {
   const isImg = /\.(jpe?g|png|webp|gif|svg)$/i.test(a.tiedosto);
   return `<div class="card"><h2>${esc(a.nimi)}</h2>${a.kuvaus ? `<p class="muted small" style="margin:0">${esc(a.kuvaus)}</p>` : ""}
+    ${a.karuselli ? `<div id="photos" hidden><div class="phead"><span>Uusimmat kuvat</span></div><div class="strip" id="strip"></div></div>` : ""}
     ${isImg ? `<a href="${esc(a.tiedosto)}" target="_blank"><img class="pic" src="${esc(a.tiedosto)}" alt="${esc(a.nimi)}" loading="lazy"></a>`
             : `<div class="btns"><a class="btn primary" href="${esc(a.tiedosto)}" target="_blank" rel="noopener">Avaa</a></div>`}</div>`;
 }).join("");
