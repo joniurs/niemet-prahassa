@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Niemet Prahassa</title>
 <meta name="theme-color" content="#7a1f1f">
+<meta name="robots" content="noindex, nofollow, noimageindex">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -34,10 +35,16 @@ html,body{margin:0;background:var(--bg);color:var(--ink);
 h1,h2,h3{font-family:Georgia,"Times New Roman",serif;font-weight:normal;line-height:1.2;margin:0}
 a{color:var(--accent)}
 header{
-  background:var(--accent);color:var(--accent-ink);
+  background:linear-gradient(rgba(40,12,12,.05),rgba(40,12,12,.15) 45%,rgba(60,14,14,.92)),url(img/silta.jpg) center 35%/cover,var(--accent);
+  color:#fff;min-height:calc(env(safe-area-inset-top,0px) + 230px);
+  display:flex;flex-direction:column;justify-content:flex-end;
   padding:calc(env(safe-area-inset-top,0px) + 18px) 18px 16px;
 }
-header h1{font-size:1.75rem;letter-spacing:.01em}
+header h1{font-size:2rem;letter-spacing:.01em;text-shadow:0 2px 8px rgba(0,0,0,.5)}
+.pic{display:block;width:100%;height:auto;border-radius:10px;margin-top:8px;border:1px solid var(--line)}
+.portrait{float:right;width:110px;margin:0 0 8px 12px;border-radius:8px;border:1px solid var(--line)}
+figure{margin:0}
+figcaption{font-size:.8rem;color:var(--muted);margin-top:4px}
 header .sub{opacity:.85;font-size:.9rem;margin-top:2px}
 header .count{margin-top:8px;font-size:.85rem;background:rgba(255,255,255,.15);display:inline-block;padding:3px 10px;border-radius:99px}
 main{padding:14px 16px calc(env(safe-area-inset-bottom,0px) + 90px);max-width:640px;margin:0 auto}
@@ -119,9 +126,11 @@ nav button.on{color:var(--accent)}
 
   <section data-view="suku">
     <div class="card">
+      <figure class="portrait"><img src="img/carl.jpg" alt="Carl Frans Hrabie" style="width:100%;border-radius:8px;display:block"><figcaption>Carl Frans Hrabie – matkan syy</figcaption></figure>
       <h2>Hrabien suku Prahassa</h2>
       <p class="muted">Isoisoisä Carl (Karel) Hrabie syntyi ja kasvoi Prahassa. Hänen isänsä Josef oli kontrabassonsoiton professori Prahan konservatoriossa.</p>
-      <div class="person"><div class="yr">Josef</div><div>Kontrabasisti. Soitti Säätyteatterissa (Stavovské divadlo) ennen professuuria. Opetti konservatoriossa, joka toimi silloin dominikaaniluostarissa Jiljin kirkon vieressä. Kuoli 1869 perheen asuessa Dražického náměstíllä. Haudattu Malostranský hřbitoville.</div></div>
+      <div class="person" style="clear:both"><div class="yr">Josef</div><div>Kontrabasisti ja säveltäjä. Soitti Säätyteatterissa (Stavovské divadlo) ennen professuuria. Opetti konservatoriossa, joka toimi silloin dominikaaniluostarissa Jiljin kirkon vieressä. Kuoli 1869 perheen asuessa Dražického náměstíllä. Haudattu Malostranský hřbitoville.</div></div>
+      <figure style="margin-top:10px"><img class="pic" style="max-width:280px" src="img/hauta.jpg" alt="Josef Hraběn hauta" loading="lazy"><figcaption>Hautalaatta: <i>Josef Hrabě, profesor konservatoře hry na kontrabas a skladatel</i> (konservatorion kontrabassonsoiton professori ja säveltäjä). Huomaa kirjoitusasu <i>Hrabě</i>.</figcaption></figure>
       <div class="person" style="margin-top:10px"><div class="yr">Carl</div><div>Syntyi 1852 Řetězová-kadulla Vanhassakaupungissa. Kastettu (todennäköisesti) Jiljin kirkossa. Kasvoi Malá Stranan taloissa, joista osa on matkan majapaikan naapurissa.</div></div>
       <div class="person" style="margin-top:10px"><div class="yr">Chvaly</div><div>Josefin isoisä toimi Chvalyn alueella voudin/kylänvanhimman tapaisessa tehtävässä. Selvitettävää: Chvalský zámek ja Zámek Čertousy.</div></div>
     </div>
@@ -155,6 +164,7 @@ nav button.on{color:var(--accent)}
     <div class="card">
       <h2>Lennot</h2>
       <dl class="kv">
+        <dt>Tapaaminen</dt><dd>to klo 14.30, OP Platinum Lounge, Helsinki-Vantaa</dd>
         <dt>Meno</dt><dd><b>AY1223</b> to <span class="dd" data-day="0"></span><br>HEL 17.35 → PRG 18.50 (T2)</dd>
         <dt>Paluu</dt><dd><b>AY1222</b> su <span class="dd" data-day="3"></span><br>PRG 11.40 → HEL 14.55 (T2)</dd>
       </dl>
@@ -224,7 +234,8 @@ const PAIVAT = [
     nimi: "Torstai", otsikko: "Saapuminen",
     tavoite: "Virittäytyminen kaupunkiin ja suvun historiaan.",
     ohjelma: [
-      { t: "17.35", what: "AY1223 Helsinki → Praha", note: "Helsinki-Vantaa T2. Ole kentällä viimeistään klo 16." },
+      { t: "14.30", what: "Tapaaminen OP Platinum Loungessa", note: "Helsinki-Vantaa. Saku hoitaa sisäänpääsyn. Selviydy perille!", img: "img/lounge.jpg" },
+      { t: "17.35", what: "AY1223 Helsinki → Praha", note: "Helsinki-Vantaa, terminaali 2." },
       { t: "18.50", what: "Lasku Prahaan (T2)", note: "Bolt/Uber Malá Stranalle noin 25–35 min.",
         btns: [["Bolt", "https://bolt.eu/en/"], ["Reitti majapaikkaan", route("Residence U Mecenáše, Malostranské náměstí 10, Praha", "driving")]] },
       { t: "20.00", what: "Majoittuminen: Residence U Mecenáše", note: "Malostranské náměstí 10",
@@ -247,7 +258,8 @@ const PAIVAT = [
       { t: "12.30", what: "Lounas ja olut: U Černého vola", note: "Hradčanyssa Loretan aukiolla. Maailman 18. paras olutkapakka.",
         btns: [["Kartta", map("U Černého vola, Loretánské náměstí, Praha")]] },
       { t: "14.00", what: "Malostranský hřbitov – Josef Hrabien hauta", fam: true,
-        note: "Hautausmaa on Smíchovissa noin 3 km päässä, ratikalla noin 15 min. Ota kynttilä mukaan. Ole perillä hyvissä ajoin ennen hämärää (n. klo 16).",
+        note: "Hautausmaa on Smíchovissa noin 3 km päässä, ratikalla noin 15 min. Ota kynttilä mukaan. Ole perillä hyvissä ajoin ennen hämärää (n. klo 16). Hauta on rautaristi, jossa on musta laatta.",
+        img: "img/hauta.jpg",
         btns: [["Navigoi haudalle", route(HAUTA, "transit"), true], ["Hauta kartalla", map(HAUTA)]] },
       { t: "17.00", what: "Paluu keskustaan, lepo", note: "" },
       { t: "19.00", what: "Tšekkiläinen illallinen", note: "Vapaata keskustelua suvun historiasta. Esim. U Fleků (Prahan vanhin oluthuone).",
@@ -266,14 +278,16 @@ const PAIVAT = [
       { t: "13.30", what: "Kaarlensillan yli Vanhaankaupunkiin", fam: true,
         note: "Řetězová 245/8 on Carlin synnyinkoti (1852). Železná 541/9 on perheen asunto vuodesta 1845. Säätyteatteri on aivan Železnán varrella, ja siellä Josef soitti.",
         btns: [["Řetězová 245/8", map("Řetězová 245/8, Praha")], ["Železná 541/9", map("Železná 541/9, Praha")], ["Säätyteatteri", map("Estates Theatre Prague")]] },
-      { t: "15.00", what: "Jiljin kirkko ja dominikaaniluostari", fam: true,
-        note: "Carlin kastekirkko. Viereisessä luostarissa toimi konservatorio, jossa Josef opetti. Kysy kastekirjoista!",
-        btns: [["Kostel sv. Jiljí", map("Kostel sv. Jiljí, Husova, Praha")], ["Luostari", map("Klášter dominikánů Praha Jilská")]] },
-      { t: "16.00", what: "Vanhankaupungin tori & olut", note: "Jelínkova plzeňská pivnice tai U Kalicha (Švejkin kantapaikka).",
-        btns: [["Vanhankaupungin tori", map("Old Town Square Prague")], ["U Kalicha", map("U Kalicha Praha")]] },
-      { t: "Ilta", what: "Kamarikonsertti Jiljin kirkossa", fam: true,
-        note: "Matkan huipennus: Hrabien jälkeläiset samassa kirkossa, jossa Carl kastettiin ja jonka vieressä Josef opetti. Tarkista konsertin alkamisaika.",
-        btns: [["Kirkko kartalla", map("Kostel sv. Jiljí, Husova, Praha")]] },
+      { t: "15.00", what: "Vanhankaupungin tori", note: "Torikierros ja lämmin juoma ennen konserttia.",
+        btns: [["Vanhankaupungin tori", map("Old Town Square Prague")]] },
+      { t: "16.30", what: "Jiljin kirkko ja dominikaaniluostari", fam: true,
+        note: "Carlin kastekirkko (Husova). Viereisessä luostarissa toimi konservatorio, jossa Josef opetti. Tule ajoissa, niin ehdit katsella ja kysyä kastekirjoista.",
+        btns: [["Kostel sv. Jiljí", map("Kostel sv. Jiljí, Husova, Praha"), true], ["Luostari", map("Klášter dominikánů Praha Jilská")]] },
+      { t: "17.00", what: "Konsertti: Vivaldi – Neljä vuodenaikaa", fam: true,
+        note: "Dvořák Symphony Orchestra, Jiljin kirkko. Matkan huipennus: Hrabien jälkeläiset samassa kirkossa, jossa Carl kastettiin ja jonka vieressä Josef opetti.",
+        img: "img/jilji.jpg" },
+      { t: "18.30", what: "Illallinen ja olut", note: "Esim. U Kalicha (Švejkin kantapaikka) tai U Fleků. Pubiruoat ja olutparit löytyvät Paikat-välilehdeltä.",
+        btns: [["U Kalicha", map("U Kalicha Praha")], ["U Fleků", map("U Fleků Praha")], ["Pubiruoat", "#paikat"]] },
     ]
   },
   {
@@ -324,7 +338,8 @@ const PAIKAT = [
     ["Jelínkova plzeňská pivnice", "Maailman 70. paras (Prahan 4.)", "Jelínkova plzeňská pivnice Praha"],
     ["U Fleků", "Prahan vanhin oluthuone", "U Fleků Praha"],
     ["U Kalicha", "Kunnon sotamies Švejk istui täällä", "Hospoda U Kalicha Praha"],
-  ]},
+  ], extra: `<div class="card"><h2>Prahan top 10 pubiruoat</h2><p class="muted small">Ruoat ja olutparit. Napauta kuvaa, niin se aukeaa isona.</p>
+    <a href="img/pubiruoat.jpg" target="_blank"><img class="pic" src="img/pubiruoat.jpg" alt="Prahan top 10 pubiruoat ja olutparit" loading="lazy"></a></div>` },
   { g: "Aamiainen", l: [
     ["Bread Gap", "Huokeampaa aamiaista", "Bread Gap Praha"],
     ["U Stolu", "Aamiaista/brunssia, $$", "U Stolu Praha"],
@@ -390,6 +405,7 @@ function renderDays() {
       <div class="t">${esc(o.t)}</div>
       <div class="w"><div class="what">${esc(o.what)}</div>
       ${o.note ? `<div class="note">${esc(o.note)}</div>` : ""}
+      ${o.img ? `<img class="pic" src="${o.img}" alt="" loading="lazy">` : ""}
       ${o.btns ? `<div class="btns">${o.btns.map(b => `<a class="btn${b[2] ? " primary" : ""}" href="${esc(b[1])}"${ext(b[1])}>${esc(b[0])}</a>`).join("")}</div>` : ""}
       </div></li>`).join("")}</ul>
     <div class="goal">${esc(p.tavoite)}</div></div>`;
@@ -408,7 +424,7 @@ $("#houses").innerHTML = TALOT.map(h => `<li>
 
 $("#places").innerHTML = PAIKAT.map(g => `<div class="grp">${esc(g.g)}</div><div class="card">${g.l.map(p => `
   <div class="place"><div><div class="n">${esc(p[0])}</div>${p[1] ? `<div class="note">${esc(p[1])}</div>` : ""}</div>
-  <a class="btn go" href="${map(p[2])}" target="_blank" rel="noopener">Kartta</a></div>`).join("")}</div>`).join("");
+  <a class="btn go" href="${map(p[2])}" target="_blank" rel="noopener">Kartta</a></div>`).join("")}</div>${g.extra || ""}`).join("");
 
 $("#links").innerHTML = LINKIT.map(l => `<a class="lnk" href="${esc(l[2])}" target="_blank" rel="noopener"><b>${esc(l[0])}</b><span>${esc(l[1])}</span></a>`).join("");
 
