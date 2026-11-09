@@ -106,8 +106,11 @@ section[data-view].on{display:block}
 .place a.go{flex:0 0 auto}
 /* links */
 .links{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.lnk{display:block;text-decoration:none;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px}
-.lnk b{display:block;font-size:.98rem}
+.lnk{display:flex;align-items:center;gap:10px;min-width:0;text-decoration:none;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px}
+.lnk b{display:block;font-size:.95rem;line-height:1.25}
+.lnk div{min-width:0}
+.lnk img,.lnk i{flex:0 0 auto;width:36px;height:36px;border-radius:9px;object-fit:cover;border:1px solid var(--line);background:#fff}
+.lnk i{display:flex;align-items:center;justify-content:center;font-style:normal;font-size:20px;background:var(--soft)}
 .lnk span{font-size:.8rem;color:var(--muted)}
 dl.kv{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;margin:6px 0 0}
 dl.kv dt{color:var(--muted);font-size:.9rem}
@@ -432,22 +435,25 @@ const AINEISTOT = [
   { nimi: "Prahan top 10 pubiruoat", kuvaus: "Makuprofiilit ja paikalliset olutparit", tiedosto: "aineisto/pubiruoat.jpg" },
 ];
 
+// [nimi, kuvaus, url, ikoni (img/ico/*.png tai emoji), sovellus {a: Android-paketti, i: App Store -id}]
+// Jos sovellus on annettu: Androidilla avataan sovellus suoraan (muuten url),
+// iPhonella App Storen sivu, jossa on "Avaa"-painike (Finnair/Bolt eivät tue suoria linkkejä).
 const LINKIT = [
-  ["Hrabien Praha", "Yhteinen karttalista", "https://maps.app.goo.gl/w6HrUggkQBowxyk19"],
-  ["Kuva-albumi", "Yhteiset matkakuvat", "https://photos.app.goo.gl/e2fCZZuTrbfYoq7u5"],
-  ["PID Lítačka", "Joukkoliikenteen liput", "https://pidlitacka.cz/en"],
-  ["PID reitit", "Ratikat ja metro", "https://pid.cz/en/"],
-  ["Bolt", "Taksi", "https://bolt.eu/en/"],
-  ["Uber", "Taksi", "https://m.uber.com/"],
-  ["Finnair", "Varaus ja lähtöselvitys", "https://www.finnair.com/fi-fi"],
-  ["Prahan lentokenttä", "Lähdöt ja saapumiset", "https://www.prg.aero/en"],
-  ["Prahan linna", "Liput ja aukiolot", "https://www.hrad.cz/en/"],
-  ["Säätyteatteri", "Ohjelmisto", "https://www.narodni-divadlo.cz/en/stavovske-divadlo"],
-  ["Sää", "yr.no – Praha", "https://www.yr.no/en/forecast/daily-table/2-3067696/Czechia/Prague/Prague"],
-  ["Kääntäjä", "Tšekki → suomi", "https://translate.google.com/?sl=cs&tl=fi"],
-  ["Valuuttamuunnin", "CZK → EUR", "https://www.xe.com/currencyconverter/convert/?Amount=1000&From=CZK&To=EUR"],
-  ["Suomen suurlähetystö", "Praha", "https://finlandabroad.fi/web/cze"],
-  ["Majapaikka", "U Mecenáše", "https://www.umecenase.cz/"],
+  ["Finnair", "Avaa sovellus", "https://www.finnair.com/fi-fi", "finnair", { a: "com.finnair", i: 933867978 }],
+  ["Hrabien Praha", "Yhteinen karttalista", "https://maps.app.goo.gl/w6HrUggkQBowxyk19", "maps"],
+  ["Kuva-albumi", "Yhteiset matkakuvat", "https://photos.app.goo.gl/e2fCZZuTrbfYoq7u5", "photos"],
+  ["PID Lítačka", "Joukkoliikenteen liput", "https://pidlitacka.cz/en", "litacka", { a: "cz.dpp.praguepublictransport", i: 983071129 }],
+  ["Bolt", "Taksi", "https://bolt.eu/en/", "bolt", { a: "ee.mtakso.client", i: 675033630 }],
+  ["Uber", "Taksi", "https://m.uber.com/ul/", "uber"],
+  ["PID reitit", "Ratikat ja metro", "https://pid.cz/en/", "pid"],
+  ["Kääntäjä", "Tšekki → suomi", "https://translate.google.com/?sl=cs&tl=fi", "translate"],
+  ["Prahan lentokenttä", "Lähdöt ja saapumiset", "https://www.prg.aero/en", "prg"],
+  ["Prahan linna", "Liput ja aukiolot", "https://www.hrad.cz/en/", "hrad"],
+  ["Säätyteatteri", "Ohjelmisto", "https://www.narodni-divadlo.cz/en/stavovske-divadlo", "🎭"],
+  ["Sää", "yr.no – Praha", "https://www.yr.no/en/forecast/daily-table/2-3067696/Czechia/Prague/Prague", "🌦️"],
+  ["Valuuttamuunnin", "CZK → EUR", "https://www.xe.com/currencyconverter/convert/?Amount=1000&From=CZK&To=EUR", "xe"],
+  ["Suomen suurlähetystö", "Praha", "https://finlandabroad.fi/web/cze", "fi"],
+  ["Majapaikka", "U Mecenáše", "https://www.umecenase.cz/", "🏨"],
 ];
 
 /* ====================================================== */
@@ -512,7 +518,16 @@ $("#materials").innerHTML = AINEISTOT.map(a => {
             : `<div class="btns"><a class="btn primary" href="${esc(a.tiedosto)}" target="_blank" rel="noopener">Avaa</a></div>`}</div>`;
 }).join("");
 
-$("#links").innerHTML =LINKIT.map(l => `<a class="lnk" href="${esc(l[2])}" target="_blank" rel="noopener"><b>${esc(l[0])}</b><span>${esc(l[1])}</span></a>`).join("");
+const OS = /android/i.test(navigator.userAgent) ? "android" : /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1) ? "ios" : "";
+const linkUrl = l => {
+  const app = l[4];
+  if (app && OS === "android" && app.a)
+    return `intent://#Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;package=${app.a};S.browser_fallback_url=${encodeURIComponent(l[2])};end`;
+  if (app && OS === "ios" && app.i) return `https://apps.apple.com/fi/app/id${app.i}`;
+  return l[2];
+};
+const ico = i => /^[a-z]+$/.test(i) ? `<img src="img/ico/${i}.png" alt="">` : `<i>${i}</i>`;
+$("#links").innerHTML = LINKIT.map(l => `<a class="lnk" href="${esc(linkUrl(l))}" target="_blank" rel="noopener">${ico(l[3])}<div><b>${esc(l[0])}</b><span>${esc(l[1])}</span></div></a>`).join("");
 
 document.querySelectorAll(".dd").forEach(el => el.textContent = fmt(dayDate(+el.dataset.day)));
 
