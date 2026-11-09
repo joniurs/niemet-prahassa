@@ -1,0 +1,446 @@
+<!doctype html>
+<html lang="fi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Niemet Prahassa</title>
+<meta name="theme-color" content="#7a1f1f">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Niemet Prahassa">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" href="icon-192.png">
+<style>
+:root{
+  --bg:#f6f1e7; --card:#fffdf8; --ink:#2a2420; --muted:#7a6f66; --line:#e4dccd;
+  --accent:#7a1f1f; --accent-ink:#fff; --gold:#b8862b; --soft:#f1e6d3;
+  --family:#fbf3e2; --tab:#fffdf8;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#1b1715; --card:#25201d; --ink:#f0e8dc; --muted:#a89c90; --line:#3a332e;
+    --accent:#c4574a; --accent-ink:#fff; --gold:#d6a74a; --soft:#2f2824;
+    --family:#2c2520; --tab:#211c19;
+    color-scheme: dark;
+  }
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{margin:0;background:var(--bg);color:var(--ink);
+  font:16px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;-webkit-text-size-adjust:100%}
+h1,h2,h3{font-family:Georgia,"Times New Roman",serif;font-weight:normal;line-height:1.2;margin:0}
+a{color:var(--accent)}
+header{
+  background:var(--accent);color:var(--accent-ink);
+  padding:calc(env(safe-area-inset-top,0px) + 18px) 18px 16px;
+}
+header h1{font-size:1.75rem;letter-spacing:.01em}
+header .sub{opacity:.85;font-size:.9rem;margin-top:2px}
+header .count{margin-top:8px;font-size:.85rem;background:rgba(255,255,255,.15);display:inline-block;padding:3px 10px;border-radius:99px}
+main{padding:14px 16px calc(env(safe-area-inset-bottom,0px) + 90px);max-width:640px;margin:0 auto}
+section[data-view]{display:none}
+section[data-view].on{display:block}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin:0 0 12px}
+.card h2{font-size:1.3rem;margin-bottom:4px}
+.card h3{font-size:1.05rem;margin:12px 0 4px}
+.muted{color:var(--muted);font-size:.9rem}
+.small{font-size:.85rem}
+/* day chips */
+.chips{display:flex;gap:8px;overflow-x:auto;padding:2px 0 12px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:0 0 auto;border:1px solid var(--line);background:var(--card);color:var(--ink);
+  border-radius:99px;padding:7px 14px;font:inherit;font-size:.92rem}
+.chip.on{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.chip .today{font-size:.7rem;margin-left:4px;opacity:.85}
+/* timeline */
+.tl{list-style:none;margin:8px 0 0;padding:0}
+.tl li{display:grid;grid-template-columns:3.4rem 1fr;gap:10px;padding:9px 0;border-top:1px solid var(--line)}
+.tl li:first-child{border-top:0}
+.tl .t{font-variant-numeric:tabular-nums;color:var(--gold);font-weight:600;font-size:.92rem;padding-top:1px}
+.tl .w{min-width:0}
+.tl .what{font-weight:600}
+.tl .note{color:var(--muted);font-size:.9rem}
+.tl li.fam{background:var(--family);margin:0 -16px;padding-left:16px;padding-right:16px}
+.btns{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.btn{display:inline-flex;align-items:center;gap:4px;text-decoration:none;font-size:.82rem;
+  border:1px solid var(--line);background:var(--soft);color:var(--ink);padding:4px 10px;border-radius:99px}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.goal{border-left:3px solid var(--gold);padding:2px 0 2px 10px;margin-top:10px;font-style:italic;color:var(--muted)}
+/* family */
+.person{display:flex;gap:12px;align-items:flex-start}
+.person .yr{flex:0 0 auto;font-family:Georgia,serif;color:var(--gold);font-size:1.1rem;min-width:3.2rem}
+.house{position:relative;padding-left:22px;margin:0;list-style:none}
+.house li{position:relative;padding:0 0 14px}
+.house li::before{content:"";position:absolute;left:-17px;top:7px;width:10px;height:10px;border-radius:50%;background:var(--gold)}
+.house li::after{content:"";position:absolute;left:-13px;top:19px;bottom:-3px;width:2px;background:var(--line)}
+.house li:last-child::after{display:none}
+.house .d{font-variant-numeric:tabular-nums;font-weight:600;font-size:.9rem;color:var(--accent)}
+.house .a{font-weight:600}
+.cp{display:inline-block;background:#b3241c;color:#fff;font-size:.72rem;font-weight:700;padding:0 6px;border-radius:3px;margin-left:4px;vertical-align:1px}
+.tip{background:var(--soft);border-radius:10px;padding:10px 12px;font-size:.9rem;margin-top:8px}
+/* places */
+.grp{margin:18px 2px 8px;font-size:.8rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.place{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 0;border-top:1px solid var(--line)}
+.place:first-of-type{border-top:0}
+.place .n{font-weight:600}
+.place .note{color:var(--muted);font-size:.88rem}
+.place a.go{flex:0 0 auto}
+/* links */
+.links{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.lnk{display:block;text-decoration:none;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px}
+.lnk b{display:block;font-size:.98rem}
+.lnk span{font-size:.8rem;color:var(--muted)}
+dl.kv{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;margin:6px 0 0}
+dl.kv dt{color:var(--muted);font-size:.9rem}
+dl.kv dd{margin:0}
+/* bottom nav */
+nav{position:fixed;left:0;right:0;bottom:0;background:var(--tab);border-top:1px solid var(--line);
+  display:flex;justify-content:space-around;padding:6px 4px calc(env(safe-area-inset-bottom,0px) + 6px);z-index:5}
+nav button{flex:1;background:none;border:0;color:var(--muted);font:inherit;font-size:.72rem;padding:4px 0;display:flex;flex-direction:column;align-items:center;gap:2px}
+nav button svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+nav button.on{color:var(--accent)}
+</style>
+</head>
+<body>
+<header>
+  <h1>Niemet Prahassa</h1>
+  <div class="sub">Joni · Jyri · Saku — Hrabien suvun juurilla</div>
+  <div class="count" id="count" hidden></div>
+</header>
+
+<main>
+  <section data-view="ohjelma" class="on">
+    <div class="chips" id="dayChips"></div>
+    <div id="dayBody"></div>
+  </section>
+
+  <section data-view="suku">
+    <div class="card">
+      <h2>Hrabien suku Prahassa</h2>
+      <p class="muted">Isoisoisä Carl (Karel) Hrabie syntyi ja kasvoi Prahassa. Hänen isänsä Josef oli kontrabassonsoiton professori Prahan konservatoriossa.</p>
+      <div class="person"><div class="yr">Josef</div><div>Kontrabasisti. Soitti Säätyteatterissa (Stavovské divadlo) ennen professuuria. Opetti konservatoriossa, joka toimi silloin dominikaaniluostarissa Jiljin kirkon vieressä. Kuoli 1869 perheen asuessa Dražického náměstíllä. Haudattu Malostranský hřbitoville.</div></div>
+      <div class="person" style="margin-top:10px"><div class="yr">Carl</div><div>Syntyi 1852 Řetězová-kadulla Vanhassakaupungissa. Kastettu (todennäköisesti) Jiljin kirkossa. Kasvoi Malá Stranan taloissa, joista osa on matkan majapaikan naapurissa.</div></div>
+      <div class="person" style="margin-top:10px"><div class="yr">Chvaly</div><div>Josefin isoisä toimi Chvalyn alueella voudin/kylänvanhimman tapaisessa tehtävässä. Selvitettävää: Chvalský zámek ja Zámek Čertousy.</div></div>
+    </div>
+
+    <div class="card">
+      <h2>Asuinpaikat</h2>
+      <p class="muted small">Etsi talon seinästä <span class="cp">punainen kilpi</span> = <i>číslo popisné</i> eli talon rekisterinumero. Sama numero kuin 1800-luvun asiakirjoissa. Sininen kilpi on nykyinen katunumero.</p>
+      <ul class="house" id="houses"></ul>
+      <div class="btns"><a class="btn primary" href="https://maps.app.goo.gl/w6HrUggkQBowxyk19" target="_blank" rel="noopener">Kaikki kartalla (Hrabien Praha)</a></div>
+    </div>
+
+    <div class="card">
+      <h2>Selvitettävää paikan päällä</h2>
+      <ul class="small">
+        <li>Josefin hauta: kuvaa hautakivi ja ympäristö, kirjaa tekstit.</li>
+        <li>Jiljin kirkko: kysy kastekirjoista (Carl 1852) ja konservatorion historiasta.</li>
+        <li>Prahan linna: oliko Hrabe/Hrabie-nimisiä linnan palveluksessa?</li>
+        <li>Nimi <i>Hrabe</i> ~ tšekin <i>hrabě</i> (kreivi)?</li>
+        <li>Vanhankaupungin osoite I/32 tai 36 (1863) on purettu. Sijaitsi mahdollisesti juutalaiskorttelin lähellä.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section data-view="paikat"><div id="places"></div></section>
+
+  <section data-view="linkit">
+    <div class="links" id="links"></div>
+  </section>
+
+  <section data-view="info">
+    <div class="card">
+      <h2>Lennot</h2>
+      <dl class="kv">
+        <dt>Meno</dt><dd><b>AY1223</b> to <span class="dd" data-day="0"></span><br>HEL 17.35 → PRG 18.50 (T2)</dd>
+        <dt>Paluu</dt><dd><b>AY1222</b> su <span class="dd" data-day="3"></span><br>PRG 11.40 → HEL 14.55 (T2)</dd>
+      </dl>
+      <p class="muted small">Aikaero: Praha on tunnin jäljessä Suomesta.</p>
+    </div>
+    <div class="card">
+      <h2>Majoitus</h2>
+      <p><b>Residence U Mecenáše</b><br>Malostranské náměstí 10, Praha 1 – Malá Strana</p>
+      <div class="btns">
+        <a class="btn primary" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=Residence+U+Mecen%C3%A1%C5%A1e+Praha">Navigoi majapaikkaan</a>
+        <a class="btn" target="_blank" rel="noopener" href="https://www.umecenase.cz/">Kotisivu</a>
+      </div>
+      <p class="small muted" style="margin-top:8px">Taksikuskille: <i>„Malostranské náměstí deset, prosím.“</i></p>
+    </div>
+    <div class="card">
+      <h2>Käytännön vinkit</h2>
+      <ul class="small">
+        <li><b>Raha:</b> Tšekin koruna (Kč, CZK). Kortti käy lähes kaikkialla. Jos maksupääte tai automaatti tarjoaa muuntoa euroiksi, valitse aina <b>korunat</b>. Vältä Euronet-automaatteja.</li>
+        <li><b>Joukkoliikenne:</b> liput PID Lítačka -sovelluksesta. Aktivoi lippu ennen kyytiin nousua, sillä tarkastuksia on.</li>
+        <li><b>Taksi:</b> Bolt tai Uber. Älä ota taksia kadulta.</li>
+        <li><b>Juomaraha:</b> noin 10 %, ravintolassa tavallisesti pyöristäen.</li>
+        <li><b>Pimeys:</b> marraskuussa hämärtyy jo klo 16–16.30. Ulkokohteet kannattaa käydä päivällä.</li>
+        <li><b>Hätänumero:</b> 112</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h2>Tšekkiä taskuun</h2>
+      <dl class="kv small">
+        <dt>Dobrý den</dt><dd>Hyvää päivää</dd>
+        <dt>Děkuji</dt><dd>Kiitos</dd>
+        <dt>Prosím</dt><dd>Ole hyvä / pyytäisin</dd>
+        <dt>Pivo, tři</dt><dd>Olutta, kolme</dd>
+        <dt>Na zdraví!</dt><dd>Kippis!</dd>
+        <dt>Zaplatím</dt><dd>Maksan (lasku)</dd>
+        <dt>Hřbitov</dt><dd>Hautausmaa</dd>
+        <dt>Hrob</dt><dd>Hauta</dd>
+        <dt>Pradědeček</dt><dd>Isoisoisä</dd>
+      </dl>
+    </div>
+  </section>
+</main>
+
+<nav id="nav">
+  <button data-go="ohjelma" class="on"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Ohjelma</button>
+  <button data-go="suku"><svg viewBox="0 0 24 24"><path d="M12 3v5M12 8l-6 5M12 8l6 5M6 13v4M18 13v4"/><circle cx="12" cy="3.5" r="1.5"/><circle cx="6" cy="19" r="2"/><circle cx="18" cy="19" r="2"/></svg>Suku</button>
+  <button data-go="paikat"><svg viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>Paikat</button>
+  <button data-go="linkit"><svg viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg>Linkit</button>
+  <button data-go="info"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg>Info</button>
+</nav>
+
+<script>
+/* ======================================================
+   MUOKATTAVAT TIEDOT – tätä osaa on helppo päivittää
+   ====================================================== */
+
+// Matkan ensimmäinen päivä (torstai) muodossa "VVVV-KK-PP".
+// Kun päivä on asetettu, sovellus avautuu automaattisesti oikeaan päivään.
+const MATKA_ALKAA = null; // esim. "2026-11-19"
+
+const map = q => "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(q);
+const route = (dest, mode = "walking") =>
+  "https://www.google.com/maps/dir/?api=1&travelmode=" + mode + "&destination=" + encodeURIComponent(dest);
+const HAUTA = "50.071528,14.389917";
+
+const PAIVAT = [
+  {
+    nimi: "Torstai", otsikko: "Saapuminen",
+    tavoite: "Virittäytyminen kaupunkiin ja suvun historiaan.",
+    ohjelma: [
+      { t: "17.35", what: "AY1223 Helsinki → Praha", note: "Helsinki-Vantaa T2. Ole kentällä viimeistään klo 16." },
+      { t: "18.50", what: "Lasku Prahaan (T2)", note: "Bolt/Uber Malá Stranalle noin 25–35 min.",
+        btns: [["Bolt", "https://bolt.eu/en/"], ["Reitti majapaikkaan", route("Residence U Mecenáše, Malostranské náměstí 10, Praha", "driving")]] },
+      { t: "20.00", what: "Majoittuminen: Residence U Mecenáše", note: "Malostranské náměstí 10",
+        btns: [["Kartta", map("Residence U Mecenáše Praha")]] },
+      { t: "20.30", what: "Iltakävely Kaarlensillalle", fam: true,
+        note: "Matkalla Dražického náměstí: talot 61 ja 62, joissa Hrabiet asuivat 1863 ja 1869. Josef kuoli talossa 61.",
+        btns: [["Dražického nám.", map("Dražického náměstí, Praha")], ["Kaarlensilta", map("Charles Bridge Prague")]] },
+      { t: "21.15", what: "Myöhäinen illallinen / ensimmäinen olut", note: "U Hrocha on aivan majapaikan lähellä (Thunovská).",
+        btns: [["U Hrocha", map("U Hrocha, Thunovská, Praha")]] },
+    ]
+  },
+  {
+    nimi: "Perjantai", otsikko: "Josefin päivä",
+    tavoite: "Linna ja Josefin hauta. Varaa haudalle aikaa, älä hoida sitä vain yhtenä nähtävyytenä muiden joukossa.",
+    ohjelma: [
+      { t: "8.30", what: "Aamiainen", note: "Bread Gap (edullinen) tai U Stolu (brunssi).",
+        btns: [["Bread Gap", map("Bread Gap Praha")], ["U Stolu", map("U Stolu Praha")]] },
+      { t: "9.30", what: "Prahan linna", note: "Kävellen ylös Nerudovaa pitkin noin 15 min. Linnan alueella Nejvyšší purkrabství ja Staré purkrabství (linnakreivin virka-asunto ja vanha linna).",
+        btns: [["Linna", map("Prague Castle")], ["Liput", "https://www.hrad.cz/en/"], ["Nejvyšší purkrabství", map("Nejvyšší purkrabství Praha")]] },
+      { t: "12.30", what: "Lounas ja olut: U Černého vola", note: "Hradčanyssa Loretan aukiolla. Maailman 18. paras olutkapakka.",
+        btns: [["Kartta", map("U Černého vola, Loretánské náměstí, Praha")]] },
+      { t: "14.00", what: "Malostranský hřbitov – Josef Hrabien hauta", fam: true,
+        note: "Hautausmaa on Smíchovissa noin 3 km päässä, ratikalla noin 15 min. Ota kynttilä mukaan. Ole perillä hyvissä ajoin ennen hämärää (n. klo 16).",
+        btns: [["Navigoi haudalle", route(HAUTA, "transit"), true], ["Hauta kartalla", map(HAUTA)]] },
+      { t: "17.00", what: "Paluu keskustaan, lepo", note: "" },
+      { t: "19.00", what: "Tšekkiläinen illallinen", note: "Vapaata keskustelua suvun historiasta. Esim. U Fleků (Prahan vanhin oluthuone).",
+        btns: [["U Fleků", map("U Fleků Praha")]] },
+    ]
+  },
+  {
+    nimi: "Lauantai", otsikko: "Carlin päivä",
+    tavoite: "Kävellään Hrabien kotitalot läpi ja päätetään ilta Carlin kastekirkkoon.",
+    ohjelma: [
+      { t: "9.00", what: "Aamiainen", note: "" },
+      { t: "10.00", what: "Hrabie-kävely Malá Stranalla", fam: true,
+        note: "Kaikki talot ovat alle 1 km säteellä majapaikasta: Malostranské nám. 36 ja 265 → Břetislavova 307 → Mostecká 52 → Dražického nám. 61 & 62 → Kosárkovo nábř. 127 → Valdštejnská 150 → Pod Bruskou 141. Osoitteet löytyvät Suku-välilehdeltä.",
+        btns: [["Avaa talolista", "#suku", true]] },
+      { t: "12.30", what: "Lounas", note: "" },
+      { t: "13.30", what: "Kaarlensillan yli Vanhaankaupunkiin", fam: true,
+        note: "Řetězová 245/8 on Carlin synnyinkoti (1852). Železná 541/9 on perheen asunto vuodesta 1845. Säätyteatteri on aivan Železnán varrella, ja siellä Josef soitti.",
+        btns: [["Řetězová 245/8", map("Řetězová 245/8, Praha")], ["Železná 541/9", map("Železná 541/9, Praha")], ["Säätyteatteri", map("Estates Theatre Prague")]] },
+      { t: "15.00", what: "Jiljin kirkko ja dominikaaniluostari", fam: true,
+        note: "Carlin kastekirkko. Viereisessä luostarissa toimi konservatorio, jossa Josef opetti. Kysy kastekirjoista!",
+        btns: [["Kostel sv. Jiljí", map("Kostel sv. Jiljí, Husova, Praha")], ["Luostari", map("Klášter dominikánů Praha Jilská")]] },
+      { t: "16.00", what: "Vanhankaupungin tori & olut", note: "Jelínkova plzeňská pivnice tai U Kalicha (Švejkin kantapaikka).",
+        btns: [["Vanhankaupungin tori", map("Old Town Square Prague")], ["U Kalicha", map("U Kalicha Praha")]] },
+      { t: "Ilta", what: "Kamarikonsertti Jiljin kirkossa", fam: true,
+        note: "Matkan huipennus: Hrabien jälkeläiset samassa kirkossa, jossa Carl kastettiin ja jonka vieressä Josef opetti. Tarkista konsertin alkamisaika.",
+        btns: [["Kirkko kartalla", map("Kostel sv. Jiljí, Husova, Praha")]] },
+    ]
+  },
+  {
+    nimi: "Sunnuntai", otsikko: "Paluu",
+    tavoite: "Kotiin hieman lähempänä suvun juuria kuin lähtiessä.",
+    ohjelma: [
+      { t: "7.30", what: "Aamiainen ja pakkaus", note: "" },
+      { t: "8.15", what: "Lyhyt aamukävely Malá Stranalla", note: "Hyvästit Malostranské náměstílle." },
+      { t: "9.15", what: "Lähtö kentälle", note: "Bolt/Uber noin 30 min. Lento lähtee 11.40, joten ole kentällä viimeistään klo 10.",
+        btns: [["Reitti kentälle", route("Letiště Václava Havla Praha", "driving"), true]] },
+      { t: "11.40", what: "AY1222 Praha → Helsinki", note: "Saapuu Helsinkiin klo 14.55." },
+    ]
+  },
+];
+
+// Hrabien asunnot (Hrabiet.xlsx + Google-lista). cp = číslo popisné (punainen kilpi)
+const TALOT = [
+  { d: "1845–", a: "Železná 541/9", alue: "Staré Město", cp: "541", n: "Perheen asunto" },
+  { d: "1852", a: "Řetězová 245/8", alue: "Staré Město", cp: "245", n: "Carlin synnyinkoti" },
+  { d: "13.3.1863", a: "Staré Město I/32 tai 36", alue: "Staré Město", cp: "32/36", n: "Talo on purettu, sijaitsi mahdollisesti juutalaiskorttelin lähellä.", ei: true },
+  { d: "3.11.1863", a: "Dražického náměstí 62/6", alue: "Malá Strana", cp: "62", n: "Kaarlensillan Malá Stranan tornin juurella (Copilotin mukaan U Tří pštrosů, ei varmistettu)" },
+  { d: "9.8.1864", a: "Malostranské náměstí 36/22", alue: "Malá Strana", cp: "36", n: "Malostranskén aukiolla (Copilotin mukaan U Flavínů, ei varmistettu)" },
+  { d: "2.11.1867", a: "Malostranské náměstí 265/6", alue: "Malá Strana", cp: "265", n: "Malostranskén aukiolla (Copilotin mukaan U Červeného jelena, ei varmistettu)" },
+  { d: "13.11.1868", a: "Mostecká 52/6", alue: "Malá Strana", cp: "52", n: "Ilmeisesti" },
+  { d: "9.11.1869", a: "Dražického náměstí 61/5", alue: "Malá Strana", cp: "61", n: "Isä Josef kuoli perheen asuessa täällä." },
+  { d: "25.1.1874", a: "Pod Bruskou 141/13", alue: "Malá Strana", cp: "141", n: "" },
+  { d: "2.3.1877", a: "Břetislavova 307/10", alue: "Malá Strana", cp: "307", n: "" },
+  { d: "25.1.1884", a: "Valdštejnská 150/4", alue: "Malá Strana", cp: "150", n: "Sama talo myös Tržiště 150/12 / Vlašská 150/1? Perhe asui täällä uudelleen 26.8.1893 alkaen." },
+  { d: "12.9.1885", a: "Kosárkovo nábřeží 127/1", alue: "Malá Strana", cp: "127", n: "Myös U železné lávky 127/4. Asunto 1885–1893." },
+];
+
+// Google Maps -listan "Hrabien Praha" kohteet
+const PAIKAT = [
+  { g: "Suvun paikat", l: [
+    ["Josef Hrabien hauta", "Malostranský hřbitov, Smíchov", HAUTA],
+    ["Kostel sv. Jiljí", "Carlin kastekirkko", "Kostel sv. Jiljí, Husova, Praha"],
+    ["Klášter dominikánů", "Prahan konservatorio Josefin aikaan", "Klášter dominikánů Praha Jilská"],
+    ["Stavovské divadlo (Säätyteatteri)", "Josef soitti täällä ennen professuuria. Don Giovannin ensi-ilta 1787.", "Estates Theatre Prague"],
+    ["Nejvyšší purkrabství", "Linnakreivin virka-asunto", "Nejvyšší purkrabství Praha"],
+    ["Staré purkrabství", "Linnakreivin vanha linna. Maisemapaikka?", "Staré purkrabství Praha"],
+    ["Chvalský zámek", "Chvalyn linna (esi-isien seutu)", "Chvalský zámek"],
+    ["Zámek Čertousy", "Rauniotalo, Bártlova 82/11, Horní Počernice", "Bártlova 82/11, Praha"],
+  ]},
+  { g: "Olutkapakat", l: [
+    ["U Hrocha", "Maailman 9. paras olutkapakka (Prahan paras). Lähellä majapaikkaa.", "U Hrocha, Thunovská, Praha"],
+    ["U Černého vola", "Maailman 18. paras (Prahan 2.)", "U Černého vola Praha"],
+    ["U Sadu", "Maailman 58. paras (Prahan 3.)", "U Sadu Praha Žižkov"],
+    ["Jelínkova plzeňská pivnice", "Maailman 70. paras (Prahan 4.)", "Jelínkova plzeňská pivnice Praha"],
+    ["U Fleků", "Prahan vanhin oluthuone", "U Fleků Praha"],
+    ["U Kalicha", "Kunnon sotamies Švejk istui täällä", "Hospoda U Kalicha Praha"],
+  ]},
+  { g: "Aamiainen", l: [
+    ["Bread Gap", "Huokeampaa aamiaista", "Bread Gap Praha"],
+    ["U Stolu", "Aamiaista/brunssia, $$", "U Stolu Praha"],
+  ]},
+  { g: "Nähtävyydet", l: [
+    ["Prahan linna", "", "Prague Castle"],
+    ["Kaarlensilta", "Somesilta", "Charles Bridge Prague"],
+    ["Vanhankaupungin tori", "The Tori", "Old Town Square Prague"],
+  ]},
+  { g: "Matka", l: [
+    ["Residence U Mecenáše", "Majapaikka", "Residence U Mecenáše Praha"],
+    ["Václav Havelin lentokenttä", "Terminaali 2", "Letiště Václava Havla Praha"],
+  ]},
+];
+
+const LINKIT = [
+  ["Hrabien Praha", "Yhteinen karttalista", "https://maps.app.goo.gl/w6HrUggkQBowxyk19"],
+  ["PID Lítačka", "Joukkoliikenteen liput", "https://pidlitacka.cz/en"],
+  ["PID reitit", "Ratikat ja metro", "https://pid.cz/en/"],
+  ["Bolt", "Taksi", "https://bolt.eu/en/"],
+  ["Uber", "Taksi", "https://m.uber.com/"],
+  ["Finnair", "Varaus ja lähtöselvitys", "https://www.finnair.com/fi-fi"],
+  ["Prahan lentokenttä", "Lähdöt ja saapumiset", "https://www.prg.aero/en"],
+  ["Prahan linna", "Liput ja aukiolot", "https://www.hrad.cz/en/"],
+  ["Säätyteatteri", "Ohjelmisto", "https://www.narodni-divadlo.cz/en/stavovske-divadlo"],
+  ["Sää", "yr.no – Praha", "https://www.yr.no/en/forecast/daily-table/2-3067696/Czechia/Prague/Prague"],
+  ["Kääntäjä", "Tšekki → suomi", "https://translate.google.com/?sl=cs&tl=fi"],
+  ["Valuuttamuunnin", "CZK → EUR", "https://www.xe.com/currencyconverter/convert/?Amount=1000&From=CZK&To=EUR"],
+  ["Suomen suurlähetystö", "Praha", "https://finlandabroad.fi/web/cze"],
+  ["Majapaikka", "U Mecenáše", "https://www.umecenase.cz/"],
+];
+
+/* ====================================================== */
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const ext = h => h.startsWith("#") ? "" : ' target="_blank" rel="noopener"';
+
+function dayDate(i) {
+  if (!MATKA_ALKAA) return null;
+  const d = new Date(MATKA_ALKAA + "T12:00:00");
+  d.setDate(d.getDate() + i);
+  return d;
+}
+const fmt = d => d ? d.getDate() + "." + (d.getMonth() + 1) + "." : "";
+
+function todayIndex() {
+  if (!MATKA_ALKAA) return -1;
+  const now = new Date(); now.setHours(12, 0, 0, 0);
+  const diff = Math.round((now - new Date(MATKA_ALKAA + "T12:00:00")) / 864e5);
+  return diff >= 0 && diff < PAIVAT.length ? diff : -1;
+}
+
+let cur = Math.max(0, todayIndex());
+function renderDays() {
+  const ti = todayIndex();
+  $("#dayChips").innerHTML = PAIVAT.map((p, i) =>
+    `<button class="chip${i === cur ? " on" : ""}" data-i="${i}">${p.nimi} ${fmt(dayDate(i))}${i === ti ? '<span class="today">● tänään</span>' : ""}</button>`).join("");
+  const p = PAIVAT[cur];
+  $("#dayBody").innerHTML = `<div class="card">
+    <h2>${esc(p.nimi)} – ${esc(p.otsikko)}</h2>
+    <ul class="tl">${p.ohjelma.map(o => `<li class="${o.fam ? "fam" : ""}">
+      <div class="t">${esc(o.t)}</div>
+      <div class="w"><div class="what">${esc(o.what)}</div>
+      ${o.note ? `<div class="note">${esc(o.note)}</div>` : ""}
+      ${o.btns ? `<div class="btns">${o.btns.map(b => `<a class="btn${b[2] ? " primary" : ""}" href="${esc(b[1])}"${ext(b[1])}>${esc(b[0])}</a>`).join("")}</div>` : ""}
+      </div></li>`).join("")}</ul>
+    <div class="goal">${esc(p.tavoite)}</div></div>`;
+}
+$("#dayChips").addEventListener("click", e => {
+  const b = e.target.closest(".chip"); if (!b) return;
+  cur = +b.dataset.i; renderDays();
+});
+
+$("#houses").innerHTML = TALOT.map(h => `<li>
+  <div class="d">${esc(h.d)}</div>
+  <div class="a">${esc(h.a)} <span class="cp">${esc(h.cp)}</span></div>
+  <div class="muted small">${esc(h.alue)}${h.n ? " · " + esc(h.n) : ""}</div>
+  ${h.ei ? "" : `<div class="btns"><a class="btn primary" href="${route(h.a + ", Praha")}" target="_blank" rel="noopener">Kävele tänne</a><a class="btn" href="${map(h.a + ", Praha")}" target="_blank" rel="noopener">Kartta</a></div>`}
+  </li>`).join("");
+
+$("#places").innerHTML = PAIKAT.map(g => `<div class="grp">${esc(g.g)}</div><div class="card">${g.l.map(p => `
+  <div class="place"><div><div class="n">${esc(p[0])}</div>${p[1] ? `<div class="note">${esc(p[1])}</div>` : ""}</div>
+  <a class="btn go" href="${map(p[2])}" target="_blank" rel="noopener">Kartta</a></div>`).join("")}</div>`).join("");
+
+$("#links").innerHTML = LINKIT.map(l => `<a class="lnk" href="${esc(l[2])}" target="_blank" rel="noopener"><b>${esc(l[0])}</b><span>${esc(l[1])}</span></a>`).join("");
+
+document.querySelectorAll(".dd").forEach(el => el.textContent = fmt(dayDate(+el.dataset.day)));
+
+// countdown
+(function () {
+  if (!MATKA_ALKAA) return;
+  const start = new Date(MATKA_ALKAA + "T17:35:00+02:00");
+  const days = Math.ceil((start - new Date()) / 864e5);
+  const el = $("#count");
+  if (days > 1) { el.textContent = `Lähtöön ${days} päivää`; el.hidden = false; }
+  else if (days === 1) { el.textContent = "Lähtö huomenna!"; el.hidden = false; }
+  else if (todayIndex() >= 0) { el.textContent = "Na zdraví! 🍺"; el.hidden = false; }
+})();
+
+// tabs
+function show(v) {
+  document.querySelectorAll("section[data-view]").forEach(s => s.classList.toggle("on", s.dataset.view === v));
+  document.querySelectorAll("nav button").forEach(b => b.classList.toggle("on", b.dataset.go === v));
+  window.scrollTo(0, 0);
+}
+$("#nav").addEventListener("click", e => {
+  const b = e.target.closest("button"); if (!b) return;
+  history.replaceState(null, "", "#" + b.dataset.go); show(b.dataset.go);
+});
+window.addEventListener("hashchange", () => show(location.hash.slice(1) || "ohjelma"));
+if (location.hash) show(location.hash.slice(1));
+
+renderDays();
+
+if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(() => {});
+</script>
+</body>
+</html>
