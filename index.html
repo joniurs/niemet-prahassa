@@ -56,6 +56,15 @@ section[data-view].on{display:block}
 .muted{color:var(--muted);font-size:.9rem}
 .small{font-size:.85rem}
 /* day chips */
+/* photo carousel */
+#photos{margin:0 0 14px}
+.phead{display:flex;justify-content:space-between;align-items:baseline;margin:0 2px 6px;font-size:.88rem;font-weight:600}
+.phead a{font-weight:normal;font-size:.85rem;text-decoration:none}
+.strip{display:flex;gap:8px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch;border-radius:12px}
+.strip::-webkit-scrollbar{display:none}
+.strip a{flex:0 0 auto;scroll-snap-align:start;position:relative;display:block}
+.strip img{display:block;height:170px;width:auto;max-width:80vw;object-fit:cover;border-radius:12px;background:var(--soft)}
+.strip .when{position:absolute;left:6px;bottom:6px;font-size:.7rem;color:#fff;background:rgba(0,0,0,.5);padding:1px 6px;border-radius:99px}
 .chips{display:flex;gap:8px;overflow-x:auto;padding:2px 0 12px;scrollbar-width:none}
 .chips::-webkit-scrollbar{display:none}
 .chip{flex:0 0 auto;border:1px solid var(--line);background:var(--card);color:var(--ink);
@@ -154,6 +163,10 @@ document.getElementById("lockForm").addEventListener("submit", async e => {
 
 <main>
   <section data-view="ohjelma" class="on">
+    <div id="photos" hidden>
+      <div class="phead"><span>📷 Uusimmat kuvat</span><a href="https://photos.app.goo.gl/e2fCZZuTrbfYoq7u5" target="_blank" rel="noopener">Koko albumi →</a></div>
+      <div class="strip" id="strip"></div>
+    </div>
     <div class="chips" id="dayChips"></div>
     <div id="dayBody"></div>
   </section>
@@ -509,6 +522,33 @@ window.addEventListener("hashchange", () => show(location.hash.slice(1) || "ohje
 if (location.hash) show(location.hash.slice(1));
 
 renderDays();
+
+// Uusimmat kuvat yhteisestä albumista (kuvat.json päivittyy GitHub Actionsilla 15 min välein)
+(async function () {
+  let d;
+  try { d = await (await fetch("kuvat.json", { cache: "no-store" })).json(); } catch (e) { return; }
+  const k = (d.kuvat || []).slice(0, 20);
+  if (!k.length) return;
+  const aika = t => {
+    if (!t) return "";
+    const dt = new Date(t), now = new Date();
+    const hm = dt.getHours() + "." + String(dt.getMinutes()).padStart(2, "0");
+    return dt.toDateString() === now.toDateString() ? "tänään " + hm : dt.getDate() + "." + (dt.getMonth() + 1) + ". " + hm;
+  };
+  const strip = $("#strip");
+  strip.innerHTML = k.map(p => `<a href="${esc(p.url)}=w2048-h2048" target="_blank" rel="noopener">
+    <img src="${esc(p.url)}=h340" alt="" loading="lazy" referrerpolicy="no-referrer" style="aspect-ratio:${p.w}/${p.h}">
+    <span class="when">${aika(p.lisatty)}</span></a>`).join("");
+  $("#photos").hidden = false;
+  // hidas automaattinen selaus, pysähtyy kun käyttäjä koskee
+  let paused = false;
+  ["touchstart", "pointerdown", "wheel"].forEach(ev => strip.addEventListener(ev, () => paused = true, { passive: true }));
+  if (k.length > 1) setInterval(() => {
+    if (paused || document.hidden || !$("#photos").offsetParent) return;
+    const end = strip.scrollLeft + strip.clientWidth >= strip.scrollWidth - 4;
+    strip.scrollTo({ left: end ? 0 : strip.scrollLeft + strip.firstElementChild.offsetWidth + 8, behavior: "smooth" });
+  }, 4000);
+})();
 
 if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(() => {});
 </script>
