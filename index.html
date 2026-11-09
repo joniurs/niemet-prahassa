@@ -212,7 +212,7 @@ document.getElementById("lockForm").addEventListener("submit", async e => {
     <div class="card">
       <h2>Lennot</h2>
       <dl class="kv">
-        <dt>Tapaaminen</dt><dd>to klo 14.30, OP Platinum Lounge, Helsinki-Vantaa</dd>
+        <dt>Tapaaminen</dt><dd>to klo 15.30, <a href="https://www.finavia.fi/fi/lentoasemat/helsinki-vantaa/lounget/op-lounge-by-aspire" target="_blank" rel="noopener">OP Lounge by Aspire</a>, Helsinki-Vantaa</dd>
         <dt>Meno</dt><dd><b>AY1223</b> to <span class="dd" data-day="0"></span><br>HEL 17.35 → PRG 18.50 (T2)</dd>
         <dt>Paluu</dt><dd><b>AY1222</b> su <span class="dd" data-day="3"></span><br>PRG 11.40 → HEL 14.55 (T2)</dd>
       </dl>
@@ -283,7 +283,8 @@ const PAIVAT = [
     nimi: "Torstai", otsikko: "Saapuminen",
     tavoite: "Virittäytyminen kaupunkiin ja suvun historiaan.",
     ohjelma: [
-      { t: "14.30", what: "Tapaaminen OP Platinum Loungessa", note: "Helsinki-Vantaa. Saku hoitaa sisäänpääsyn. Selviydy perille!", img: "img/lounge.jpg" },
+      { t: "15.30", what: "Tapaaminen OP Loungessa", note: "OP Lounge by Aspire, Helsinki-Vantaa. Saku hoitaa sisäänpääsyn. Selviydy perille!", img: "img/lounge.jpg",
+        btns: [["Loungen tiedot", "https://www.finavia.fi/fi/lentoasemat/helsinki-vantaa/lounget/op-lounge-by-aspire"]] },
       { t: "17.35", what: "AY1223 Helsinki → Praha", note: "Helsinki-Vantaa, terminaali 2." },
       { t: "18.50", what: "Lasku Prahaan (T2)", note: "Bolt/Uber Malá Stranalle noin 25–35 min.",
         btns: [["Bolt", "https://bolt.eu/en/"], ["Reitti majapaikkaan", route("Residence U Mecenáše, Malostranské náměstí 10, Praha", "driving")]] },
